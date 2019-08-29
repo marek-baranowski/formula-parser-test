@@ -1,30 +1,24 @@
 import React from "react";
-import { Parser } from "hot-formula-parser";
+import { Store } from "./store";
 
-const store = {
-  foo: "43",
-  bar: "foo + 10",
-  baz: "foo + bar"
-};
+const store = Store.create();
 
-const parser = new Parser();
+store.createAndAddFormula({ name: "foo", value: "2+2" });
+store.createAndAddFormula({ name: "bar", value: "foo + 3" });
 
-parser.on("callVariable", function(name, done) {
-  console.log("callVariable", name);
-  const res = parser.parse(store[name]);
-  console.log("callVariable2", res);
-  done(res.result);
-});
-
-const final = parser.parse("baz");
-
-console.log("final", final);
+console.log("final", store);
 
 function App() {
+  const onClick = () => {
+    store.formulas[0].setValue("123");
+    console.log("onClick", store.formulas[1].parsed);
+  };
+
   return (
     <div className="mw8 avenir center pt4">
       <h3>hello world</h3>
       <p>Lorem ipsum.</p>
+      <button onClick={onClick}>click</button>
     </div>
   );
 }
