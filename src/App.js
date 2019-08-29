@@ -1,26 +1,29 @@
 import React from "react";
+import { observer } from "mobx-react";
 import { Store } from "./store";
+import Formula from "./components/Formula";
 
 const store = Store.create();
 
-store.createAndAddFormula({ name: "foo", value: "2+2" });
-store.createAndAddFormula({ name: "bar", value: "foo + 3" });
-
-console.log("final", store);
-
 function App() {
   const onClick = () => {
-    store.formulas[0].setValue("123");
-    console.log("onClick", store.formulas[1].parsed);
+    const name = prompt("name");
+    const value = prompt("value");
+    store.createAndAddFormula({ name, value });
   };
 
   return (
     <div className="mw8 avenir center pt4">
-      <h3>hello world</h3>
-      <p>Lorem ipsum.</p>
-      <button onClick={onClick}>click</button>
+      <button onClick={onClick}>create formula</button>
+      <div className="mt4">
+        {store.formulas.map(formula => (
+          <div key={formula.id} className="mt2">
+            <Formula formula={formula} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-export default App;
+export default observer(App);

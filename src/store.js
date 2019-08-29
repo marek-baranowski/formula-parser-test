@@ -37,12 +37,9 @@ export const Store = types
   .volatile(self => {
     const parser = new Parser();
 
-    parser.on("callVariable", function(name, done) {
-      console.log("callVariable", name);
+    parser.on("callVariable", (name, done) => {
       const { parsed } = self.findByName(name);
-      console.log("callVariable2", parsed);
       const res = parser.parse(`${parsed.result}`);
-      console.log("callVariable3", res);
       done(res.result);
     });
 
