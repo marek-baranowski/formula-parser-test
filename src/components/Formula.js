@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 
 function Formula({ formula }) {
-  const { name, value, parsed, setValue } = formula;
+  const { name, value, result, setValue } = formula;
 
   const handleValueChange = () => {
     const newValue = prompt("New value", value);
@@ -10,10 +10,12 @@ function Formula({ formula }) {
   };
 
   return (
-    <span className="ba b--black-20">
-      {name}: {parsed.result}{" "}
-      <button onClick={handleValueChange}>edit value</button>
-    </span>
+    <div className="dib ba b--black-20 pa2">
+      {name}: {result}
+      <button className="ml2" onClick={handleValueChange}>
+        edit value
+      </button>
+    </div>
   );
 }
 

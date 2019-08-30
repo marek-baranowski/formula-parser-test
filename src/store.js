@@ -14,6 +14,10 @@ export const FormulaModel = types
     },
     get parsed() {
       return self.store.parser.parse(`${self.value}`);
+    },
+    get result() {
+      const { result, error } = self.parsed;
+      return error || result;
     }
   }))
   .actions(self => ({
@@ -27,9 +31,6 @@ export const Store = types
     formulas: types.optional(types.array(FormulaModel), [])
   })
   .views(self => ({
-    findById(id) {
-      return self.formulas.find(n => n.id === id);
-    },
     findByName(name) {
       return self.formulas.find(n => n.name === name);
     }
@@ -38,8 +39,8 @@ export const Store = types
     const parser = new Parser();
 
     parser.on("callVariable", (name, done) => {
-      const { parsed } = self.findByName(name);
-      const res = parser.parse(`${parsed.result}`);
+      const { result } = self.findByName(name);
+      const res = parser.parse(`${result}`);
       done(res.result);
     });
 
